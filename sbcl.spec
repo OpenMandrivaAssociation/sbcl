@@ -4,21 +4,21 @@
 %define threads 1
 %{?!_without_threads: %{expand: %%global threads 0}}
 
-%define bootstrap 1
+%define bootstrap 0
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
 Version: 1.0.19
-Release: %mkrel 1
+Release: %mkrel 2
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
 URL:     http://sbcl.sourceforge.net/
 Source0: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-source.tar.bz2
-%if %{bootstrap}
-Source1: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-linux-binary.tar.bz2
-Source2: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-64-linux-binary.tar.bz2
-%endif
+#%if %{bootstrap}
+#Source1: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-linux-binary.tar.bz2
+#Source2: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-64-linux-binary.tar.bz2
+#%endif
 Source3: customize-target-features.lisp 
 Patch1: sbcl-1.0.19-default-sbcl-home.patch
 Patch2: sbcl-0.9.5-personality.patch
@@ -87,6 +87,7 @@ export PATH=`pwd`/sbcl-bootstrap/bin:${PATH}
 %endif
 
 export DEFAULT_SBCL_HOME=%{_libdir}/sbcl
+export RPM_OPT_FLAGS=$(echo %optflags | sed -e "s/-fomit-frame-pointer//")
 sh make.sh
 
 make -C doc/manual html info
