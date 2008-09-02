@@ -8,8 +8,8 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.19
-Release: %mkrel 3
+Version: 1.0.20
+Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
