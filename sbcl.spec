@@ -2,14 +2,14 @@
 
 # threading support
 %define threads 1
-%{?!_without_threads: %{expand: %%global threads 0}}
+%{?_without_threads: %{expand: %%global threads 0}}
 
 %define bootstrap 0
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
 Version: 1.0.19
-Release: %mkrel 2
+Release: %mkrel 3
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
@@ -77,7 +77,7 @@ popd
 %patch7 -p1 -b .permissive
 
 %if %{threads}
-install -m644 -p %{SOURCE2} ./customize-target-features.lisp
+install -m644 -p %{SOURCE3} ./customize-target-features.lisp
 %endif
 
 %build
