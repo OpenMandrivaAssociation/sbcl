@@ -8,7 +8,7 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.25
+Version: 1.0.26
 Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
@@ -117,8 +117,8 @@ find %{buildroot} -name 'test-passed' | xargs rm -vf
 /sbin/install-info %{_infodir}/asdf.info %{_infodir}/dir ||:
 
 %postun
-  /sbin/install-info --delete %{_infodir}/sbcl.info %{_infodir}/dir ||:
-  /sbin/install-info --delete %{_infodir}/asdf.info %{_infodir}/dir ||:
+/sbin/install-info --delete %{_infodir}/sbcl.info %{_infodir}/dir ||:
+/sbin/install-info --delete %{_infodir}/asdf.info %{_infodir}/dir ||:
 
 %pre
 # min_bootstrap: We *could* check for only-on-upgrade, but why bother?   (-:
