@@ -8,7 +8,7 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.26
+Version: 1.0.29
 Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
@@ -22,7 +22,7 @@ Source0: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-source.tar.b
 Source3: customize-target-features.lisp 
 Patch1: sbcl-1.0.25-default-sbcl-home.patch
 Patch2: sbcl-0.9.5-personality.patch
-Patch3: sbcl-1.0.16-optflags.patch
+Patch3: sbcl-1.0.28-optflags.patch
 Patch4: sbcl-0.9.17-LIB_DIR.patch
 Patch5: sbcl-1.0.16-GNU_SOURCE.patch
 # Allow override of contrib test failure(s)
