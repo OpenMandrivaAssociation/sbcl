@@ -8,7 +8,7 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.29
+Version: 1.0.30
 Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
@@ -129,7 +129,7 @@ find %{buildroot} -name 'test-passed' | xargs rm -vf
 %files
 %defattr(-,root,root)
 %doc BUGS COPYING README CREDITS NEWS TLA TODO
-%doc SUPPORT STYLE PRINCIPLES
+%doc STYLE PRINCIPLES
 %{_bindir}/*
 %{_libdir}/sbcl/
 %{_mandir}/man?/*
