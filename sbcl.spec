@@ -111,6 +111,13 @@ find %{buildroot} -name .cvsignore | xargs rm -f
 # 'test-passed' files from %%check
 find %{buildroot} -name 'test-passed' | xargs rm -vf
 
+%define long_name	Method-sb_002dbsd_002dsockets_003asocket_002dmake_002dstream-_0028_0028socket-socket_0029-_0026key-input-output-_0028element_002dtype-_0027character_0029-_0028buffering-full_0029-_0028external_002dformat-default_0029-timeout-auto_002dclose_0029
+%define smaller_name	Method-sb_2dbsd_2dsockets_3asocket_2dmake_2dstream-_28_28socket-socket_29-_26key-input-output-_28element_2dtype-_27character_29-_28buffering-full_29-_28external_2dformat-default_29-timeout-auto_2dclose_29
+
+perl -pi -e 's|%{long_name}|%{smaller_name}|;' \
+    %{buildroot}%{_docdir}/sbcl/doc/manual/sbcl/General-Sockets.html \
+    %{buildroot}%{_docdir}/sbcl/doc/manual/sbcl.html
+mv -f %{buildroot}%{_docdir}/sbcl/{%{long_name},%{smaller_name}}.html
 
 %post
 /sbin/install-info %{_infodir}/sbcl.info %{_infodir}/dir ||:
