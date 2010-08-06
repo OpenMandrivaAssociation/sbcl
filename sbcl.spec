@@ -115,9 +115,9 @@ find %{buildroot} -name 'test-passed' | xargs rm -vf
 %define smaller_name	Method-sb_2dbsd_2dsockets_3asocket_2dmake_2dstream-_28_28socket-socket_29-_26key-input-output-_28element_2dtype-_27character_29-_28buffering-full_29-_28external_2dformat-default_29-timeout-auto_2dclose_29
 
 perl -pi -e 's|%{long_name}|%{smaller_name}|;' \
-    %{buildroot}%{_docdir}/sbcl/sbcl/General-Sockets.html \
-    %{buildroot}%{_docdir}/sbcl/sbcl.html
-mv -f %{buildroot}%{_docdir}/sbcl/sbcl/{%{long_name},%{smaller_name}}.html
+    doc/manual/sbcl/General-Sockets.html \
+    doc/manual/sbcl/sbcl.html
+mv -f doc/manual/sbcl/{%{long_name},%{smaller_name}}.html
 
 %post
 /sbin/install-info %{_infodir}/sbcl.info %{_infodir}/dir ||:
