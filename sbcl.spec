@@ -9,7 +9,7 @@
 
 Name: 	 sbcl
 Version: 1.0.40
-Release: %mkrel 2
+Release: %mkrel 3
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
