@@ -8,8 +8,8 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.40
-Release: %mkrel 2
+Version: 1.0.45
+Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
@@ -69,11 +69,11 @@ popd
 %setup
 %endif
 
-%patch1 -p1 -b .default-sbcl-home
+# %patch1 -p1 -b .default-sbcl-home
 %patch2 -p1 -b .personality
 %patch3 -p1 -b .optflags
 %patch4 -p1 -b .LIB_DIR
-%patch5 -p1 -b .GNU_SOURCE
+%patch5 -p2 -b .GNU_SOURCE
 %patch7 -p1 -b .permissive
 
 %if %{threads}
@@ -117,7 +117,7 @@ find %{buildroot} -name 'test-passed' | xargs rm -vf
 perl -pi -e 's|%{long_name}|%{smaller_name}|;' \
     doc/manual/sbcl/General-Sockets.html \
     doc/manual/sbcl/sbcl.html
-mv -f doc/manual/sbcl/{%{long_name},%{smaller_name}}.html
+# mv -f doc/manual/sbcl/{%{long_name},%{smaller_name}}.html
 
 %post
 /sbin/install-info %{_infodir}/sbcl.info %{_infodir}/dir ||:
@@ -140,8 +140,7 @@ mv -f doc/manual/sbcl/{%{long_name},%{smaller_name}}.html
 %{_bindir}/*
 %{_libdir}/sbcl/
 %{_mandir}/man?/*
-%doc doc/manual/sbcl
-%doc doc/manual/asdf
+%doc doc/manual/
 %{_infodir}/*
 
 %clean
