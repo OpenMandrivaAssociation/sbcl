@@ -9,7 +9,7 @@
 
 Name: 	 sbcl
 Version: 1.0.45
-Release: %mkrel 1
+Release: %mkrel 2
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
@@ -20,7 +20,7 @@ Source0: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-source.tar.b
 #Source2: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-64-linux-binary.tar.bz2
 #%endif
 Source3: customize-target-features.lisp 
-Patch1: sbcl-1.0.25-default-sbcl-home.patch
+Patch1: sbcl-1.0.45-default-sbcl-home.patch
 Patch2: sbcl-0.9.5-personality.patch
 Patch3: sbcl-1.0.28-optflags.patch
 Patch4: sbcl-0.9.17-LIB_DIR.patch
@@ -69,7 +69,7 @@ popd
 %setup
 %endif
 
-# %patch1 -p1 -b .default-sbcl-home
+%patch1 -p1 -b .default-sbcl-home
 %patch2 -p1 -b .personality
 %patch3 -p1 -b .optflags
 %patch4 -p1 -b .LIB_DIR
@@ -110,14 +110,6 @@ find %{buildroot} -name CVS -type d | xargs rm -rf
 find %{buildroot} -name .cvsignore | xargs rm -f
 # 'test-passed' files from %%check
 find %{buildroot} -name 'test-passed' | xargs rm -vf
-
-%define long_name	Method-sb_002dbsd_002dsockets_003asocket_002dmake_002dstream-_0028_0028socket-socket_0029-_0026key-input-output-_0028element_002dtype-_0027character_0029-_0028buffering-full_0029-_0028external_002dformat-default_0029-timeout-auto_002dclose_0029
-%define smaller_name	Method-sb_2dbsd_2dsockets_3asocket_2dmake_2dstream-_28_28socket-socket_29-_26key-input-output-_28element_2dtype-_27character_29-_28buffering-full_29-_28external_2dformat-default_29-timeout-auto_2dclose_29
-
-perl -pi -e 's|%{long_name}|%{smaller_name}|;' \
-    doc/manual/sbcl/General-Sockets.html \
-    doc/manual/sbcl/sbcl.html
-# mv -f doc/manual/sbcl/{%{long_name},%{smaller_name}}.html
 
 %post
 /sbin/install-info %{_infodir}/sbcl.info %{_infodir}/dir ||:
