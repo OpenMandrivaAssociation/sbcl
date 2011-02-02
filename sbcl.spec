@@ -86,6 +86,7 @@ export SBCL_HOME=`pwd`/sbcl-bootstrap/lib/sbcl
 export PATH=`pwd`/sbcl-bootstrap/bin:${PATH}
 %endif
 
+export SBCL_HOME=%{_libdir}/sbcl
 export DEFAULT_SBCL_HOME=%{_libdir}/sbcl
 export RPM_OPT_FLAGS=$(echo %optflags | sed -e "s/-fomit-frame-pointer//")
 sh make.sh
