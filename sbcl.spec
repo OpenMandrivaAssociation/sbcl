@@ -9,7 +9,7 @@
 
 Name: 	 sbcl
 Version: 1.0.45
-Release: %mkrel 2
+Release: %mkrel 3
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
@@ -113,18 +113,20 @@ find %{buildroot} -name .cvsignore | xargs rm -f
 find %{buildroot} -name 'test-passed' | xargs rm -vf
 
 %post
-/sbin/install-info %{_infodir}/sbcl.info %{_infodir}/dir ||:
-/sbin/install-info %{_infodir}/asdf.info %{_infodir}/dir ||:
+for info in sbcl.info sbcl.info-1 sbcl.info-2 asdf.info; do
+    /sbin/install-info %{_infodir}/${info}* %{_infodir}/dir ||:
+done
 
 %postun
-/sbin/install-info --delete %{_infodir}/sbcl.info %{_infodir}/dir ||:
-/sbin/install-info --delete %{_infodir}/asdf.info %{_infodir}/dir ||:
+for info in sbcl.info sbcl.info-1 sbcl.info-2 asdf.info; do
+    /sbin/install-info --delete %{_infodir}/${info}* %{_infodir}/dir ||:
+done
 
 %pre
 # min_bootstrap: We *could* check for only-on-upgrade, but why bother?   (-:
-/sbin/install-info --delete %{_infodir}/sbcl.info %{_infodir}/dir >& /dev/null ||:
-/sbin/install-info --delete %{_infodir}/asdf.info %{_infodir}/dir >& /dev/null ||:
-
+for info in sbcl.info sbcl.info-1 sbcl.info-2 asdf.info; do
+    /sbin/install-info --delete %{_infodir}/${info}* %{_infodir}/dir >& /dev/null ||:
+done
 
 %files
 %defattr(-,root,root)
