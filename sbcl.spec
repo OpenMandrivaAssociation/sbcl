@@ -8,8 +8,8 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.45
-Release: %mkrel 5
+Version: 1.0.46
+Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
@@ -50,14 +50,14 @@ interpreter, and debugger.
 %ifarch x86_64
 echo x86_64
 %define sbcl_arch x86_64
-%setup -a 2
-%define dirbin %{name}-%{version}
+%setup -q -a 2
+%define drbin %{name}-%{version}
 %endif
 
 %ifarch %{ix86}
 echo ix86
 %define sbcl_arch x86
-%setup -a 1
+%setup -q -a 1
 %define dirbin %{name}-%{version}-%{sbcl_arch}-linux
 %endif
 
@@ -66,7 +66,7 @@ pushd %{dirbin}
 INSTALL_ROOT=`pwd`/../sbcl-bootstrap %{?sbcl_shell} ./install.sh
 popd
 %else
-%setup
+%setup -q
 %endif
 
 %patch1 -p1 -b .default-sbcl-home
