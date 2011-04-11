@@ -8,13 +8,13 @@
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
 Name: 	 sbcl
-Version: 1.0.46
+Version: 1.0.47
 Release: %mkrel 1
 Summary: Steel Bank Common Lisp compiler and runtime system
 License: BSD
 Group:   Development/Other
 URL:     http://sbcl.sourceforge.net/
-Source0: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-source.tar.bz2
+Source0: http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.47/sbcl-1.0.47-source.tar.bz2
 #%if %{bootstrap}
 #Source1: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-linux-binary.tar.bz2
 #Source2: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-64-linux-binary.tar.bz2
