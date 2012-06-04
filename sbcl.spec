@@ -7,43 +7,38 @@
 %define bootstrap 0
 %{?_with_bootstrap: %{expand: %%global bootstrap 1}}
 
-Name: 	 sbcl
-Version: 1.0.47
-Release: %mkrel 1
-Summary: Steel Bank Common Lisp compiler and runtime system
-License: BSD
-Group:   Development/Other
-URL:     http://sbcl.sourceforge.net/
-Source0: http://downloads.sourceforge.net/project/sbcl/sbcl/1.0.47/sbcl-1.0.47-source.tar.bz2
+Name:		sbcl
+Version:	1.0.57
+Release:	2
+Summary:	Steel Bank Common Lisp compiler and runtime system
+License:	BSD
+Group:		Development/Other
+URL:		http://sbcl.sourceforge.net/
+Source0:	http://downloads.sourceforge.net/project/sbcl/sbcl/%{version}/sbcl-%{version}-source.tar.bz2
 #%if %{bootstrap}
 #Source1: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-linux-binary.tar.bz2
 #Source2: http://prdownloads.sourceforge.net/sbcl/%{name}-%{version}-x86-64-linux-binary.tar.bz2
 #%endif
-Source3: customize-target-features.lisp 
-Patch1: sbcl-1.0.45-default-sbcl-home.patch
-Patch2: sbcl-0.9.5-personality.patch
-Patch3: sbcl-1.0.28-optflags.patch
-Patch4: sbcl-0.9.17-LIB_DIR.patch
-Patch5: sbcl-1.0.16-GNU_SOURCE.patch
+Source3:	customize-target-features.lisp
+Patch1:		sbcl-1.0.45-default-sbcl-home.patch
+Patch2:		sbcl-0.9.5-personality.patch
+Patch3:		sbcl-1.0.28-optflags.patch
+Patch4:		sbcl-0.9.17-LIB_DIR.patch
+Patch5:		sbcl-1.0.16-GNU_SOURCE.patch
 # Allow override of contrib test failure(s)
-Patch7: sbcl-1.0.2-permissive.patch
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}
-
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
+Patch7:		sbcl-1.0.2-permissive.patch
 # doc generation
-BuildRequires: ghostscript
-BuildRequires: texinfo
-BuildRequires: time
+BuildRequires:	ghostscript
+BuildRequires:	texinfo
+BuildRequires:	time
 %if ! %{bootstrap}
-BuildRequires: sbcl
+BuildRequires:	sbcl
 %endif
 
 %description
 Steel Bank Common Lisp (SBCL) is a Open Source development environment
 for Common Lisp. It includes an integrated native compiler,
 interpreter, and debugger.
-
 
 %prep
 %if %{bootstrap}
@@ -88,7 +83,7 @@ export PATH=`pwd`/sbcl-bootstrap/bin:${PATH}
 
 export SBCL_HOME=%{_libdir}/sbcl
 export DEFAULT_SBCL_HOME=%{_libdir}/sbcl
-export RPM_OPT_FLAGS=$(echo %optflags | sed -e "s/-fomit-frame-pointer//")
+export RPM_OPT_FLAGS=$(echo %{optflags} | sed -e "s/-fomit-frame-pointer//")
 sh make.sh
 
 make -C doc/manual html info
@@ -112,24 +107,7 @@ find %{buildroot} -name .cvsignore | xargs rm -f
 # 'test-passed' files from %%check
 find %{buildroot} -name 'test-passed' | xargs rm -vf
 
-%post
-for info in sbcl.info sbcl.info-1 sbcl.info-2 asdf.info; do
-    /sbin/install-info %{_infodir}/${info}* %{_infodir}/dir ||:
-done
-
-%postun
-for info in sbcl.info sbcl.info-1 sbcl.info-2 asdf.info; do
-    /sbin/install-info --delete %{_infodir}/${info}* %{_infodir}/dir ||:
-done
-
-%pre
-# min_bootstrap: We *could* check for only-on-upgrade, but why bother?   (-:
-for info in sbcl.info sbcl.info-1 sbcl.info-2 asdf.info; do
-    /sbin/install-info --delete %{_infodir}/${info}* %{_infodir}/dir >& /dev/null ||:
-done
-
 %files
-%defattr(-,root,root)
 %doc BUGS COPYING README CREDITS NEWS TLA TODO
 %doc STYLE PRINCIPLES
 %{_bindir}/*
@@ -138,5 +116,3 @@ done
 %doc doc/manual/
 %{_infodir}/*
 
-%clean
-rm -rf %{buildroot}
