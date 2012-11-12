@@ -1,0 +1,44 @@
+--- sbcl-1.0.45/make-target-1.sh.orig	2011-02-02 16:08:04.677112949 -0200
++++ sbcl-1.0.45/make-target-1.sh	2011-02-02 16:08:43.950112947 -0200
+@@ -20,6 +20,28 @@ LANG=C
+ LC_ALL=C
+ export LANG LC_ALL
+ 
++# Allow the definition of INSTALL_ROOT and/or SBCL_HOME to correctly
++# set the hard-coded SBCL_HOME macro in src/runtime/runtime.c
++
++DEFAULT_SBCL_HOME=${DEFAULT_SBCL_HOME:-/usr/local/lib/sbcl/}
++
++# Strip off any trailing / on the name; we'll add this later but don't
++# need two
++DEFAULT_SBCL_HOME=${DEFAULT_SBCL_HOME%/}
++
++export DEFAULT_SBCL_HOME
++
++file=src/runtime/sbcl-home.h
++echo "/* This is a machine-generated file.            */" > $file
++echo "/* Please do not edit it by hand.               */" >> $file
++echo "/* Change the default SBCL_HOME by setting the  */" >> $file
++echo "/* DEFAULT_SBCL_HOME environment variable prior */" >> $file
++echo "/* to building. See make-target-1.sh for more   */" >> $file
++echo "/* information.                                 */" >> $file
++echo "#ifndef SBCL_HOME" >> $file
++echo "#define SBCL_HOME \"$DEFAULT_SBCL_HOME/\"" >> $file
++echo "#endif" >> $file
++
+ # Build the runtime system and symbol table (.nm) file.
+ #
+ # (This C build has to come after the first genesis in order to get
+--- sbcl-1.0.45/src/runtime/runtime.c.orig	2011-02-02 16:09:26.191112436 -0200
++++ sbcl-1.0.45/src/runtime/runtime.c	2011-02-02 16:09:47.573113031 -0200
+@@ -67,9 +67,7 @@
+ #include "interr.h"
+ #endif
+ 
+-#ifndef SBCL_HOME
+-#define SBCL_HOME SBCL_PREFIX"/lib/sbcl/"
+-#endif
++#include "sbcl-home.h"
+ 
+ #ifdef LISP_FEATURE_HPUX
+ extern void *return_from_lisp_stub;

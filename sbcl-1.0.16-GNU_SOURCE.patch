@@ -1,0 +1,12 @@
+--- BUILD/sbcl-1.0.45/contrib/asdf-module.mk.orig	2010-12-15 13:25:36.000000000 +0100
++++ BUILD/sbcl-1.0.45/contrib/asdf-module.mk	2010-12-15 13:26:03.000000000 +0100
+@@ -9,6 +9,9 @@
+ 
+ UNAME:=$(shell uname -s)
+ 
++ifeq (Linux,$(UNAME))
++  EXTRA_CFLAGS+=-D_GNU_SOURCE
++endif
+ ifeq (SunOS,$(UNAME))
+   EXTRA_CFLAGS=-D_XOPEN_SOURCE=500 -D__EXTENSIONS__
+   PATH:=/usr/xpg4/bin:${PATH}
