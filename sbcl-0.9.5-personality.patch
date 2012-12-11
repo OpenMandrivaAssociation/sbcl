@@ -1,6 +1,8 @@
---- sbcl-0.9.5/src/runtime/linux-os.c.pers	2005-09-24 09:29:54.000000000 -0500
-+++ sbcl-0.9.5/src/runtime/linux-os.c	2005-09-27 09:37:33.463478519 -0500
-@@ -177,6 +177,10 @@
+Index: src/runtime/linux-os.c
+===================================================================
+--- src/runtime/linux-os.c
++++ src/runtime/linux-os.c	2012-01-12 09:37:31.690343523 +0100
+@@ -280,6 +280,10 @@
                  if (i != -1) {
                      runtime[i] = '\0';
                      execve(runtime, argv, envp);
