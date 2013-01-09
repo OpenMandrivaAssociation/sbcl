@@ -2,8 +2,8 @@
 %define threads 1
 
 Name:           sbcl
-Version:        1.1.2
-Release:        %mkrel 3
+Version:        1.1.3
+Release:        1
 Summary:        Steel Bank Common Lisp compiler and runtime system
 License:        Public Domain and MIT and BSD with advertising
 Group:          Development/Other
