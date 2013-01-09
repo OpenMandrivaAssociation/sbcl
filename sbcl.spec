@@ -15,6 +15,7 @@ Patch2:         %{name}-0.9.5-personality.patch
 Patch3:         %{name}-1.0.28-optflags.patch
 Patch4:         %{name}-0.9.17-LIB_DIR.patch
 Patch5:         %{name}-1.0.16-GNU_SOURCE.patch
+Patch6:		%{name}-1.1.3-glibc-2.17.patch
 # Allow override of contrib test failure(s)
 Patch7:         %{name}-1.0.2-permissive.patch
 
@@ -45,6 +46,7 @@ debugger.
 %patch3 -p0
 %patch4 -p0
 %patch5 -p0
+%patch6 -p1 -b .glibc217~
 %patch7 -p0
 
 %if %{threads}
