@@ -91,8 +91,6 @@ find %{buildroot} -name .cvsignore | xargs rm -f
 # 'test-passed' files from %%check
 find %{buildroot} -name 'test-passed' | xargs rm -vf
 
-chmod a+w %{_libdir}/%{name}/sb-posix/test-output/write-test.txt
-
 %files
 %doc %{_docdir}/%{name}
 %{_bindir}/*
