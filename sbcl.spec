@@ -1,5 +1,7 @@
-%define bootstrap 0
+%define bootstrap 1
 %define threads 1
+# disabled until updated to work with newer texinfo
+%bcond_with	docs
 
 Name:           sbcl
 Version:        1.1.3
@@ -21,16 +23,16 @@ Patch7:         %{name}-1.0.2-permissive.patch
 
 #Requires(post): /sbin/install-info
 #Requires(preun):/sbin/install-info
-# doc generation
-BuildRequires:  ghostscript
-BuildRequires:  texinfo
-BuildRequires:  texlive
 BuildRequires:  time
-BuildRequires:  texinfo
 %if %{bootstrap}
 BuildRequires:  clisp
 %else
 BuildRequires:  %{name}
+%endif
+%if %{with docs}
+BuildRequires:  ghostscript
+BuildRequires:  texinfo
+BuildRequires:  texlive
 %endif
 
 %description
@@ -66,7 +68,9 @@ sh make.sh "clisp"
 sh make.sh "%{name}"
 %endif
 
+%if %{with docs}
 make -C doc/manual
+%endif
 
 %install
 unset SBCL_HOME
@@ -86,6 +90,8 @@ find %{buildroot} -name CVS -type d | xargs rm -rf
 find %{buildroot} -name .cvsignore | xargs rm -f
 # 'test-passed' files from %%check
 find %{buildroot} -name 'test-passed' | xargs rm -vf
+
+chmod a+w %{_libdir}/%{name}/sb-posix/test-output/write-test.txt
 
 %files
 %doc %{_docdir}/%{name}
@@ -113,5 +119,7 @@ find %{buildroot} -name 'test-passed' | xargs rm -vf
 %{_libdir}/%{name}/sb-simple-streams/*
 %{_libdir}/%{name}/sb-sprof/*
 %{_libdir}/%{name}/%{name}.*
+%if %{with docs}
 %{_infodir}/*
+%endif
 %{_mandir}/man?/*
