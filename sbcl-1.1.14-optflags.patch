@@ -1,0 +1,32 @@
+--- ./contrib/asdf-module.mk.RPM_FLAGS	2014-01-21 18:17:41.630374331 +0200
++++ ./contrib/asdf-module.mk	2014-01-21 18:18:55.781648300 +0200
+@@ -27,6 +27,8 @@
+   EXTRA_CFLAGS=-D_GNU_SOURCE
+ endif
+ 
++EXTRA_CFLAGS += $(RPM_OPT_FLAGS)
++
+ export CC SBCL EXTRA_CFLAGS EXTRA_LDFLAGS
+ 
+ all: $(FASL) $(ASD) $(EXTRA_ALL_TARGETS)
+--- ./src/runtime/Config.x86-linux.RPM_FLAGS	2013-11-30 16:28:19.000000000 +0200
++++ ./src/runtime/Config.x86-linux	2014-01-21 18:17:41.629374341 +0200
+@@ -42,6 +42,8 @@
+   OS_LIBS += -lz
+ endif
+ 
++CFLAGS += $(RPM_OPT_FLAGS)
++
+ GC_SRC = gencgc.c
+ 
+ # Nothing to do for after-grovel-headers.
+--- ./src/runtime/Config.x86_64-linux.RPM_FLAGS	2013-11-30 16:28:19.000000000 +0200
++++ ./src/runtime/Config.x86_64-linux	2014-01-21 18:17:41.629374341 +0200
+@@ -43,6 +43,7 @@
+ endif
+ 
+ CFLAGS += -fno-omit-frame-pointer
++CFLAGS += $(RPM_OPT_FLAGS)
+ 
+ GC_SRC = gencgc.c
+ 

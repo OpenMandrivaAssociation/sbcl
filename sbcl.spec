@@ -1,38 +1,32 @@
-%define bootstrap 1
+%define bootstrap 0
 %define threads 1
-# disabled until updated to work with newer texinfo
-%bcond_with	docs
 
 Name:           sbcl
-Version:        1.1.3
+Version:        1.1.14
 Release:        1
 Summary:        Steel Bank Common Lisp compiler and runtime system
 License:        Public Domain and MIT and BSD with advertising
 Group:          Development/Other
 URL:            http://sbcl.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}-source.tar.bz2
-Source10:       customize-target-features.lisp 
+Source10:       customize-target-features.lisp
 Patch1:         %{name}-1.0.45-default-%{name}-home.patch
-Patch2:         %{name}-0.9.5-personality.patch
-Patch3:         %{name}-1.0.28-optflags.patch
+Patch2:         %{name}-1.1.14-personality.patch
+Patch3:         %{name}-1.1.14-optflags.patch
 Patch4:         %{name}-0.9.17-LIB_DIR.patch
-Patch5:         %{name}-1.0.16-GNU_SOURCE.patch
-Patch6:		%{name}-1.1.3-glibc-2.17.patch
 # Allow override of contrib test failure(s)
-Patch7:         %{name}-1.0.2-permissive.patch
+Patch7:         %{name}-1.1.14-permissive.patch
 
-#Requires(post): /sbin/install-info
-#Requires(preun):/sbin/install-info
+# doc generation
+BuildRequires:  ghostscript
+BuildRequires:  gmp-devel
+BuildRequires:  texinfo
+BuildRequires:  texlive
 BuildRequires:  time
 %if %{bootstrap}
 BuildRequires:  clisp
 %else
 BuildRequires:  %{name}
-%endif
-%if %{with docs}
-BuildRequires:  ghostscript
-BuildRequires:  texinfo
-BuildRequires:  texlive
 %endif
 
 %description
@@ -47,8 +41,6 @@ debugger.
 %patch2 -p0
 %patch3 -p0
 %patch4 -p0
-%patch5 -p0
-%patch6 -p1 -b .glibc217~
 %patch7 -p0
 
 %if %{threads}
@@ -60,7 +52,7 @@ install -m644 -p %{SOURCE10} ./customize-target-features.lisp
 #these variables are available thanks to patching
 export SBCL_HOME=%{_libdir}/%{name}
 export DEFAULT_SBCL_HOME=%{_libdir}/%{name}
-export RPM_OPT_FLAGS=$(echo %optflags | sed -e "s/-fomit-frame-pointer//")
+export RPM_OPT_FLAGS=$(echo %{optflags} | sed -e "s/-fomit-frame-pointer//")
 
 %if %{bootstrap}
 sh make.sh "clisp"
@@ -68,9 +60,7 @@ sh make.sh "clisp"
 sh make.sh "%{name}"
 %endif
 
-%if %{with docs}
 make -C doc/manual
-%endif
 
 %install
 unset SBCL_HOME
@@ -94,30 +84,25 @@ find %{buildroot} -name 'test-passed' | xargs rm -vf
 %files
 %doc %{_docdir}/%{name}
 %{_bindir}/*
-%{_libdir}/%{name}/asdf-install/*
-%{_libdir}/%{name}/asdf/*
-%{_libdir}/%{name}/sb-aclrepl/*
-%{_libdir}/%{name}/sb-bsd-sockets/*
-%{_libdir}/%{name}/sb-cltl2/*
-%{_libdir}/%{name}/sb-concurrency/*.fasl
-%{_libdir}/%{name}/sb-concurrency/*.lisp
-%{_libdir}/%{name}/sb-concurrency/*.texinfo
-%{_libdir}/%{name}/sb-concurrency/*.asd
-%{_libdir}/%{name}/sb-concurrency/tests/*
-%{_libdir}/%{name}/sb-concurrency/Makefile
-%{_libdir}/%{name}/sb-cover/*
-%{_libdir}/%{name}/sb-executable/*
-%{_libdir}/%{name}/sb-grovel/*
-%{_libdir}/%{name}/sb-introspect/*
-%{_libdir}/%{name}/sb-md5/*
-%{_libdir}/%{name}/sb-posix/*
-%{_libdir}/%{name}/sb-queue/*
-%{_libdir}/%{name}/sb-rotate-byte/*
-%{_libdir}/%{name}/sb-rt/*
-%{_libdir}/%{name}/sb-simple-streams/*
-%{_libdir}/%{name}/sb-sprof/*
-%{_libdir}/%{name}/%{name}.*
-%if %{with docs}
+%{_libdir}/%{name}/%{name}.core
+%define sb_prefix %{_libdir}/%{name}/contrib
+%{sb_prefix}/asdf.*
+%{sb_prefix}/sb-aclrepl.*
+%{sb_prefix}/sb-bsd-sockets.*
+%{sb_prefix}/sb-cltl2.*
+%{sb_prefix}/sb-concurrency.*
+%{sb_prefix}/sb-cover.*
+%{sb_prefix}/sb-executable.*
+%{sb_prefix}/sb-gmp.*
+%{sb_prefix}/sb-grovel.*
+%{sb_prefix}/sb-introspect.*
+%{sb_prefix}/sb-md5.*
+%{sb_prefix}/sb-posix.*
+%{sb_prefix}/sb-queue.*
+%{sb_prefix}/sb-rotate-byte.*
+%{sb_prefix}/sb-rt.*
+%{sb_prefix}/sb-simple-streams.*
+%{sb_prefix}/sb-sprof.*
 %{_infodir}/*
-%endif
 %{_mandir}/man?/*
+
