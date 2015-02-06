@@ -3,7 +3,7 @@
 
 Name:           sbcl
 Version:        1.1.14
-Release:        1
+Release:        2
 Summary:        Steel Bank Common Lisp compiler and runtime system
 License:        Public Domain and MIT and BSD with advertising
 Group:          Development/Other
