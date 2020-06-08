@@ -1,4 +1,4 @@
-%define bootstrap 1
+%define bootstrap 0
 %define threads 1
 
 Name:           sbcl
