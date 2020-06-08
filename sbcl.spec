@@ -24,8 +24,6 @@ BuildRequires:  texinfo
 BuildRequires:  texlive
 BuildRequires:  time
 %if %{bootstrap}
-BuildRequires:  clisp
-%else
 BuildRequires:  %{name}
 %endif
 
