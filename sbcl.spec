@@ -10,7 +10,7 @@ Group:          Development/Other
 URL:            http://sbcl.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/project/%{name}/%{name}/%{version}/%{name}-%{version}-source.tar.bz2
 Source10:       customize-target-features.lisp
-Patch1:         %{name}-1.0.45-default-%{name}-home.patch
+#Patch1:         %{name}-1.0.45-default-%{name}-home.patch
 Patch2:         %{name}-1.1.14-personality.patch
 Patch3:         %{name}-1.1.14-optflags.patch
 Patch4:         %{name}-0.9.17-LIB_DIR.patch
