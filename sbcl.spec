@@ -35,11 +35,7 @@ debugger.
 
 %prep
 %setup -q
-%patch1 -p0
-%patch2 -p0
-%patch3 -p0
-%patch4 -p0
-%patch7 -p0
+%autopatch -p0
 
 %if %{threads}
 install -m644 -p %{SOURCE10} ./customize-target-features.lisp
