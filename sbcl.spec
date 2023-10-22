@@ -102,7 +102,9 @@ debugger.
 %{sb_prefix}/sb-sprof.*
 %{sb_prefix}/uiop.*
 %{_mandir}/man1/%{name}.1*
+%if %{without docs}
 %{_infodir}/*
+%endif
 
 #---------------------------------------------------------------------------
 
