@@ -1,7 +1,7 @@
 %define _disable_lto 1
 
 # Use %%bcond_with bootstrap to build sbcl with an existing sbcl package
-%bcond_with bootstrap
+%bcond_without bootstrap
 %bcond_without docs
 
 # disable docs if bootstrapping
