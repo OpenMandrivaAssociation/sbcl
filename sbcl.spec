@@ -97,7 +97,9 @@ debugger.
 %{sb_prefix}/sb-queue.*
 %{sb_prefix}/sb-rotate-byte.*
 %{sb_prefix}/sb-rt.*
+%ifnarch aarch64
 %{sb_prefix}/sb-simd.*
+%endif
 %{sb_prefix}/sb-simple-streams.*
 %{sb_prefix}/sb-sprof.*
 %{sb_prefix}/uiop.*
