@@ -53,7 +53,7 @@ BuildRequires:	%{name}
 %endif
 
 BuildRequires:	ctags
-%if %{without docs}
+%if %{with docs}
 BuildRequires:	ghostscript
 BuildRequires:	texinfo
 BuildRequires:	texlive
@@ -102,7 +102,7 @@ debugger.
 %{sb_prefix}/sb-sprof.*
 %{sb_prefix}/uiop.*
 %{_mandir}/man1/%{name}.1*
-%if %{without docs}
+%if %{with docs}
 %{_infodir}/*
 %endif
 
