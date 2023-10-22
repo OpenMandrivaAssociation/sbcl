@@ -1,0 +1,33 @@
+--- a/contrib/asdf-module.mk
++++ b/contrib/asdf-module.mk
+@@ -24,6 +24,8 @@ ifeq (Linux,$(UNAME))
+   EXTRA_CFLAGS+=-D_GNU_SOURCE
+ endif
+ 
++#EXTRA_CFLAGS += $(RPM_OPT_FLAGS)
++
+ export CC SBCL EXTRA_CFLAGS
+ 
+ all: $(FASL)
+--- a/src/runtime/Config.arm-linux
++++ b/src/runtime/Config.arm-linux
+@@ -9,7 +9,7 @@
+ # provided with absolutely no warranty. See the COPYING and CREDITS
+ # files for more information.
+ 
+-CFLAGS += -marm -march=armv5t
++#CFLAGS += -marm -march=armv5t
+ 
+ ASSEM_SRC = arm-assem.S
+ ARCH_SRC = arm-arch.c
+--- a/src/runtime/GNUmakefile
++++ b/src/runtime/GNUmakefile
+@@ -30,7 +30,7 @@ __LDFLAGS__ =
+ 
+ include ../../output/prefix.def
+ 
+-CFLAGS += -g -Wall -Wundef -Wsign-compare -Wpointer-arith -O3
++#CFLAGS += -g -Wall -Wundef -Wsign-compare -Wpointer-arith -O3
+ ASFLAGS += $(CFLAGS)
+ CPPFLAGS += -I.
+ 

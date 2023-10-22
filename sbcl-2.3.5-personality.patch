@@ -1,0 +1,15 @@
+--- a/src/runtime/linux-os.c
++++ b/src/runtime/linux-os.c
+@@ -288,6 +288,11 @@
+                 setenv("SBCL_IS_RESTARTING", "T", 1);
+                 runtime[i] = '\0';
+                 execv(runtime, argv);
++            } else {
++                    setenv("SBCL_IS_RESTARTING", "T", 1);
++                    /* if /proc isn't available (like in chroot builds, like mock),
++                     * try using execvp with argv[0] instead */
++                    execvp(argv[0], argv);
+             }
+         }
+         /* Either changing the personality or execve() failed.
+
