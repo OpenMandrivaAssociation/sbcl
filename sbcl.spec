@@ -17,6 +17,10 @@
 %define sbcl_arch x86-64
 %define sbcl_ver 1.4.7
 %endif
+%ifarch znver1
+%define sbcl_arch x86-64
+%define sbcl_ver 1.4.7
+%endif
 %ifarch aarch64
 %define sbcl_arch arm64
 %define sbcl_ver 1.4.2
@@ -129,7 +133,7 @@ export CFLAGS="$RPM_OPT_FLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_
 %{?sbcl_arch:export SBCL_ARCH=%{sbcl_arch}}
 
 sh make.sh \
-	--prefix=%{_prefix} \	
+	--prefix=%{_prefix} \
 %if %{with bootstrap}
 	--xc-host="../%{name}-%{sbcl_ver}-%{sbcl_arch}-linux/run-sbcl.sh"
 %else
