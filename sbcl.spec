@@ -1,8 +1,7 @@
-%define _disable_lto 1
-
 # Use %%bcond_with bootstrap to build sbcl with an existing sbcl package
-%bcond_with bootstrap
-%bcond_with docs
+%bcond_without bootstrap
+%bcond_without docs
+%bcond_with verbose
 
 # disable docs if bootstrapping
 %if %{with bootstrap}
@@ -15,11 +14,11 @@
 %if %{with bootstrap}
 %ifarch x86_64
 %define sbcl_arch x86-64
-%define sbcl_ver 1.4.7
+%define sbcl_ver 2.3.6
 %endif
 %ifarch znver1
 %define sbcl_arch x86-64
-%define sbcl_ver 1.4.7
+%define sbcl_ver 2.3.6
 %endif
 %ifarch aarch64
 %define sbcl_arch arm64
@@ -29,8 +28,8 @@
 
 Summary:	Steel Bank Common Lisp compiler and runtime system
 Name:		sbcl
-Version:	2.3.9
-Release:	2
+Version:	2.3.10
+Release:	1
 License:	Public Domain and MIT and BSD with advertising
 Group:		Development/Other
 URL:		https://sbcl.sourceforge.net/
@@ -40,10 +39,12 @@ Source50:	https://downloads.sourceforge.net/sourceforge/sbcl/%{name}-%{sbcl_ver}
 %endif
 Source10:	customize-target-features.lisp
 
-#Patch1:	%{name}-2.3.5-default-%{name}-home.patch
+#Patch1:		%{name}-2.3.5-default-%{name}-home.patch
 Patch2:		%{name}-2.3.5-personality.patch
 Patch3:		%{name}-2.3.5-optflags.patch
-#Patch4		%{name}-2.3.5-verbose-build.patch
+%if %{with verbose}
+Patch4:		%{name}-2.3.5-verbose-build.patch
+%endif
 Patch5:		%{name}-2.3.5-LIB_DIR.patch
 
 %if %{without bootstrap}
@@ -53,6 +54,7 @@ BuildRequires:	%{name}
 %endif
 
 BuildRequires:	ctags
+BuildRequires: emacs-common
 %if %{with docs}
 BuildRequires:	ghostscript
 BuildRequires:	texinfo
@@ -74,35 +76,10 @@ debugger.
 %files
 %doc %{_docdir}/%{name}
 %{_bindir}/*
+%dir %{_libdir}/%{name}
 %{_libdir}/%{name}/%{name}.core
-%{_libdir}/%{name}/sbcl.mk
-%dir %{sb_prefix}
-#{sb_prefix}/sbcl.core
-#{sb_prefix}/sbcl.mk
-#{sb_prefix}/contrib/
-%{sb_prefix}/asdf.*
-%{sb_prefix}/sb-aclrepl.*
-%{sb_prefix}/sb-bsd-sockets.*
-%{sb_prefix}/sb-capstone.*
-%{sb_prefix}/sb-cltl2.*
-%{sb_prefix}/sb-concurrency.*
-%{sb_prefix}/sb-cover.*
-%{sb_prefix}/sb-executable.*
-%{sb_prefix}/sb-gmp.*
-%{sb_prefix}/sb-grovel.*
-%{sb_prefix}/sb-introspect.*
-%{sb_prefix}/sb-md5.*
-%{sb_prefix}/sb-mpfr.*
-%{sb_prefix}/sb-posix.*
-%{sb_prefix}/sb-queue.*
-%{sb_prefix}/sb-rotate-byte.*
-%{sb_prefix}/sb-rt.*
-%ifnarch aarch64
-%{sb_prefix}/sb-simd.*
-%endif
-%{sb_prefix}/sb-simple-streams.*
-%{sb_prefix}/sb-sprof.*
-%{sb_prefix}/uiop.*
+%{_libdir}/%{name}/%{name}.mk
+%{_libdir}/%{name}/contrib/
 %{_mandir}/man1/%{name}.1*
 %if %{with docs}
 %{_infodir}/*
@@ -115,34 +92,42 @@ debugger.
 
 # set version.lisp-expr
 %if %{with bootstrap}
-sed -i.-e "s|\"%{version}\"|\"%{version}-%{vendor}\"|" version.lisp-expr
-%else
 sed -i.-e "s|\"%{version}\"|\"%{version}-bootstrap\"|" version.lisp-expr
+%else
+sed -i.-e "s|\"%{version}\"|\"%{version}-%{vendor}\"|" version.lisp-expr
 %endif
+
+#if %{without bootstrap}
+#install -m644 -p %{SOURCE10} ./customize-target-features.lisp
+#endif
 
 # fix lib path
-sed -i 's|../lib/sbcl|../%{_lib}/sbcl|' src/runtime/runtime.c
-
-%if %{without bootstrap}
-install -m644 -p %{SOURCE10} ./customize-target-features.lisp
-%endif
+sed -i 's|/lib/|/%{_lib}/|g' \
+	install.sh \
+	make-config.sh \
+	contrib/sb-gmp/gmp.lisp \
+	doc/cmu-user/extensions.tex \
+	src/runtime/runtime.c \
+	src/code/module.lisp \
+	src/code/filesys.lisp \
+	tests/install-test.sh \
+	tests/install-test.sh \
+	tests/pathnames.pure.lisp \
+	%{nil}
 
 %build
-#setup SBCL_HOME, DEFAULT_SBCL_HOME and CFLAGS
-#these variables are available thanks to patching
+%set_build_flags
 export SBCL_HOME=%{_libdir}/%{name}
-#export DEFAULT_SBCL_HOME=%{_libdir}/%{name}}
 export RPM_OPT_FLAGS=$(echo %{optflags} | sed -e "s/-fomit-frame-pointer//")
 export CFLAGS="$RPM_OPT_FLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
+
 %{?sbcl_arch:export SBCL_ARCH=%{sbcl_arch}}
 
+#sh make-config.sh
 sh make.sh \
 	--prefix=%{_prefix} \
-%if %{with bootstrap}
-	--xc-host="../%{name}-%{sbcl_ver}-%{sbcl_arch}-linux/run-sbcl.sh"
-%else
-	--xc-host="sbcl --disable-debugger --no-sysinit --no-userinit"
-%endif
+	--with-sb-core-compression \
+	%{?with_bootstrap:--xc-host="../%{name}-%{sbcl_ver}-%{sbcl_arch}-linux/run-sbcl.sh"}
 
 # docs
 %if %{with docs}
@@ -150,17 +135,17 @@ sh make.sh \
 %endif
 
 %install
-unset SBCL_HOME
-export INSTALL_ROOT=%{buildroot}%{_prefix}
-export LIB_DIR=%{buildroot}%{_libdir}
+INSTALL_ROOT=%{buildroot}%{_prefix} \
+LIB_DIR=%{buildroot}%{_libdir} \
+SBCL_HOME=%{buildroot}%{_libdir}/%{name} \
 sh install.sh
 
-#if test %{_docdir} != %{_prefix}/share/doc ;then
-#	mkdir -p %{buildroot}/%{_docdir}
-#	mv %{buildroot}/%{_prefix}/share/doc/sbcl %{buildroot}/%{_docdir}/
-#fi
+if test %{_docdir} != %{_prefix}/share/doc ;then
+	mkdir -p %{buildroot}/%{_docdir}
+	mv %{buildroot}/%{_prefix}/share/doc/sbcl %{buildroot}/%{_docdir}/
+fi
 
-## Unpackaged files
+# remove unwanted stuff
 rm -f %{buildroot}%{_infodir}/dir
 # CVS crud
 find %{buildroot} -name CVS -type d | xargs rm -rf
@@ -176,4 +161,6 @@ find %{buildroot} -name 'test-output' -type d | xargs rm -rf
 find %{buildroot} -name *\.texinfo | xargs rm -f
 # remove Makefiles
 find %{buildroot} -name Makefile | xargs rm -f
+
+%check
 

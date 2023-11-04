@@ -1,4 +1,4 @@
 sources:
   sbcl-1.4.2-arm64-linux-binary.tar.bz2: 5a7929040e00bfbdad59b0ec0faf85f3cb11f8e6
-  sbcl-1.4.7-x86-64-linux-binary.tar.bz2: ae4c18ce2ccfc312a36782d2eade07f12ce0779d
-  sbcl-2.3.9-source.tar.bz2: 2a0c24645caf0d7ebad13776af348a4e7b3cf934
+  sbcl-2.3.6-x86-64-linux-binary.tar.bz2: 62c2890c12cb6f0b4fabcb64d63ea5818ac59299
+  sbcl-2.3.10-source.tar.bz2: e250741f0ad76f3fad29d590c3b011e38f29b558
