@@ -39,18 +39,15 @@ Source50:	https://downloads.sourceforge.net/sourceforge/sbcl/%{name}-%{sbcl_ver}
 %endif
 Source10:	customize-target-features.lisp
 
-#Patch1:		%{name}-2.3.5-default-%{name}-home.patch
-Patch2:		%{name}-2.3.5-personality.patch
-Patch3:		%{name}-2.3.5-optflags.patch
+Patch0:		%{name}-2.3.5-personality.patch
+Patch1:		%{name}-2.3.5-optflags.patch
 %if %{with verbose}
-Patch4:		%{name}-2.3.5-verbose-build.patch
+Patch2:		%{name}-2.3.5-verbose-build.patch
 %endif
-Patch5:		%{name}-2.3.5-LIB_DIR.patch
+Patch3:		%{name}-2.3.5-LIB_DIR.patch
 
 %if %{without bootstrap}
 BuildRequires:	%{name}
-#else
-#BuildRequires:	clisp
 %endif
 
 BuildRequires:	ctags
