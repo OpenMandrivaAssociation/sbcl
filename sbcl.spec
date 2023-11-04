@@ -1,5 +1,5 @@
 # Use %%bcond_with bootstrap to build sbcl with an existing sbcl package
-%bcond_without bootstrap
+%bcond_with bootstrap
 %bcond_without docs
 %bcond_with verbose
 
