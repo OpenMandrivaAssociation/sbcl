@@ -28,7 +28,7 @@
 
 Summary:	Steel Bank Common Lisp compiler and runtime system
 Name:		sbcl
-Version:	2.3.11
+Version:	2.4.0
 Release:	1
 License:	Public Domain and MIT and BSD with advertising
 Group:		Development/Other
