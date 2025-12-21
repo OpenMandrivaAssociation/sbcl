@@ -47,6 +47,7 @@ Patch2:		%{name}-2.3.5-verbose-build.patch
 Patch3:		%{name}-2.3.5-LIB_DIR.patch
 
 %if %{without bootstrap}
+BuildRequires:	make
 BuildRequires:	%{name}
 %endif
 
