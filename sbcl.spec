@@ -28,7 +28,7 @@
 
 Summary:	Steel Bank Common Lisp compiler and runtime system
 Name:		sbcl
-Version:	2.4.1
+Version:	2.6.7
 Release:	1
 License:	Public Domain and MIT and BSD with advertising
 Group:		Development/Other
@@ -39,8 +39,8 @@ Source50:	https://downloads.sourceforge.net/sourceforge/sbcl/%{name}-%{sbcl_ver}
 %endif
 Source10:	customize-target-features.lisp
 
-Patch0:		%{name}-2.3.5-personality.patch
-Patch1:		%{name}-2.3.5-optflags.patch
+# dropped (no longer applies): Patch0:		%{name}-2.3.5-personality.patch
+# dropped (no longer applies): Patch1:		%{name}-2.3.5-optflags.patch
 %if %{with verbose}
 Patch2:		%{name}-2.3.5-verbose-build.patch
 %endif
